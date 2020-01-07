@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.net.Uri;
 import android.provider.Settings;
+import android.app.Activity;
 
 public class DrawOverAppsPermissionPlugin extends CordovaPlugin {
 
