@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  id="cordova-plugin-draw-over-apps-permission"
+  version="1.0.0">
+
+    <name>DrawOverAppsPermission</name>
+    <description>Plugin to check for the draw over apps permission on android</description>
+    <author>Beslogic Inc.</author>
+    <license>Apache 2.0 License</license>
+    <engines>
+        <engine name="cordova" version=">=3.5.0" />
+    </engines>
+    <js-module src="www/draw-over-apps-permission.js" name="DrawOverAppsPermission">
+        <clobbers target="cordova.plugins.DrawOverAppsPermission" />
+    </js-module>
+
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="DrawOverAppsPermission">
+                <param name="android-package" value="com.beslogic.DrawOverAppsPermission"/>
+            </feature>
+        </config-file>
+        <source-file src="src/android/com/beslogic/draw-over-apps-permission/DrawOverAppsPermissionPlugin.java" target-dir="src/com/beslogic/draw-over-apps-permission" />
+    </platform>
+
+</plugin>
