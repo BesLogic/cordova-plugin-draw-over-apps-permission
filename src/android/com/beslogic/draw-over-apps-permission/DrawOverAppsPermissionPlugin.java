@@ -11,9 +11,10 @@ import android.os.Build;
 import android.net.Uri;
 import android.provider.Settings;
 
-public static final String CHECK_PERMISSIONS = "checkPermissions";
-
 public class DrawOverAppsPermissionPlugin extends CordovaPlugin {
+
+    public static final String CHECK_PERMISSIONS = "checkPermissions";
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         boolean actionState = true;
