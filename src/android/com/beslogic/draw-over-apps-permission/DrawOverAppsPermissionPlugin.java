@@ -14,12 +14,18 @@ import android.provider.Settings;
 public class DrawOverAppsPermissionPlugin extends CordovaPlugin {
 
     public static final String CHECK_PERMISSIONS = "checkPermissions";
-
+    public Activity activity;
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        activity = this.cordova.getActivity();
         boolean actionState = true;
         if (action.equals(CHECK_PERMISSIONS)) {
-            checkPermission();
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (!checkDrawOverAppsPermission(activity)) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:" + activity.getPackageName()));
+                    activity.startActivityForResult(intent, 0);
+                }
+            }
             callbackContext.success();
             return true;
         } else {
@@ -27,26 +33,12 @@ public class DrawOverAppsPermissionPlugin extends CordovaPlugin {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public static boolean checkDrawOverAppsPermission(Activity currentActivity) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return Settings.canDrawOverlays(currentActivity);
+        } else {
+            return true;
+        }
 
-        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-            if (!Settings.canDrawOverlays(this)) {
-                // You don't have permission
-                checkPermission();
-            }
-        }
-    }
-    public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 5469;
-    public void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-            }
-        }
     }
 }
