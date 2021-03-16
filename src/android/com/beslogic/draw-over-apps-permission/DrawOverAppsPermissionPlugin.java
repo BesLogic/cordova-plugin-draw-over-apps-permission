@@ -15,6 +15,7 @@ import android.app.Activity;
 public class DrawOverAppsPermissionPlugin extends CordovaPlugin {
 
     public static final String CHECK_PERMISSIONS = "checkPermissions";
+    public static final String HAS_PERMISSIONS = "hasPermissions";
     public Activity activity;
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -29,7 +30,12 @@ public class DrawOverAppsPermissionPlugin extends CordovaPlugin {
             }
             callbackContext.success();
             return true;
-        } else {
+        }
+        else if (action.equals(HAS_PERMISSIONS)) {
+            callbackContext.success(checkDrawOverAppsPermission(activity) ? 1 : 0);
+            return true;
+        }
+        else {
             return false;
         }
     }
